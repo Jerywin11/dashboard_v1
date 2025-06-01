@@ -1,0 +1,100 @@
+import NavItem from "./NavItem";
+import NavGroup from "./NavGroup";
+
+const Sidebar = ({
+  sidebarOpen,
+  isMobile,
+  darkMode,
+  activeTab,
+  setActiveTab,
+  setSidebarOpen,
+  navItems,
+}) => {
+  const handleItemClick = (tab) => {
+    setActiveTab(tab);
+    // Expand sidebar if it's collapsed (except on mobile where we want to close it)
+    if (!sidebarOpen && !isMobile) {
+      setSidebarOpen(true);
+    }
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  };
+
+  return (
+    <div
+      className={`
+        ${sidebarOpen ? "w-64" : isMobile ? "-translate-x-full" : "w-20"} 
+        ${isMobile ? "fixed inset-y-0 z-30" : "relative"} 
+        ${
+          darkMode
+            ? "bg-gray-800 border-r border-gray-700"
+            : "bg-white border-r border-gray-200"
+        } 
+        ${darkMode ? "text-white" : "text-gray-900"} 
+        flex flex-col
+      `}
+    >
+      {/* Sidebar Header */}
+      <div
+        className={`flex items-center justify-center px-4 py-4 border-b ${
+          darkMode ? "border-gray-700" : "border-gray-200"
+        } h-[65px] flex-shrink-0`}
+      >
+        {sidebarOpen ? (
+          <h2
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className={`cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
+              ${darkMode ? "text-white" : "text-gray-900"}`}
+          >
+            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              ZeriByteCare
+            </span>
+          </h2>
+        ) : (
+          <h2
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className={`cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
+              ${darkMode ? "text-white" : "text-gray-900"}`}
+          >
+            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              ZBC
+            </span>
+          </h2>
+        )}
+      </div>
+
+      {/* Navigation Items */}
+      <nav className="mt-6 overflow-y-auto flex-1">
+        {navItems.map((item) =>
+          item.group ? (
+            <NavGroup
+              key={item.text}
+              icon={item.icon}
+              text={item.text}
+              items={item.items}
+              activeTab={activeTab}
+              setActiveTab={handleItemClick} // Updated to use handleItemClick
+              sidebarOpen={sidebarOpen}
+              darkMode={darkMode}
+              isMobile={isMobile}
+              setSidebarOpen={setSidebarOpen}
+            />
+          ) : (
+            <NavItem
+              key={item.text}
+              icon={item.icon}
+              text={item.text}
+              active={activeTab === item.tab}
+              onClick={() => handleItemClick(item.tab)} // Updated to use handleItemClick
+              sidebarOpen={sidebarOpen}
+              darkMode={darkMode}
+            />
+          )
+        )}
+      </nav>
+    </div>
+  );
+};
+
+export default Sidebar;

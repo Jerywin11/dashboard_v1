@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start:frontend": "npm start --prefix client",
+    "start:backend": "npm start --prefix server",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  }
+}
+
+
