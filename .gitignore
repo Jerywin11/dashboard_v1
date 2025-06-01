@@ -2,19 +2,3 @@
 # Ignore all node_modules folders anywhere in the project
 **/node_modules/
 
-# Ignore build/dist folders
-dist/
-build/
-
-# Ignore environment variables
-.env
-.env.local
-.env.*.local
-
-# Ignore logs
-logs/
-*.log
-
-# Ignore system files
-.DS_Store
-Thumbs.db
