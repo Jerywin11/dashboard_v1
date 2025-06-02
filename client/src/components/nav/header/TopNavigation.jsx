@@ -7,7 +7,8 @@ import Dropdown from "../../shared/Dropdown";
 import UserDropdown from "../../shared/UserDropdown";
 import NotificationsDropdown from "../../shared/NotificationsDropdown";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-
+import SearchModal from "../../shared/modal/SearchModal";
+import SearchBar from "../../shared/SearchBar";
 const TopNavigation = ({
   darkMode,
   setDarkMode,
@@ -27,6 +28,7 @@ const TopNavigation = ({
   const [notificationCount, setNotificationCount] = useState(3);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState("home");
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const handleNotificationClick = (notification) => {
     console.log("Notification clicked:", notification);
@@ -98,10 +100,10 @@ const TopNavigation = ({
           <h2
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`
-    hidden max-md:block
-    cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
-    ${darkMode ? "text-white" : "text-gray-900"}
-  `}
+            hidden max-md:block
+            cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
+            ${darkMode ? "text-white" : "text-gray-900"}
+          `}
           >
             <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {logoText}
@@ -110,42 +112,23 @@ const TopNavigation = ({
         </div>
 
         {/* Right side content */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           {/* Search Bar (hidden on smaller screens) */}
-          <div className="hidden md:block relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-5 ${
-                  darkMode ? "text-gray-400" : "text-gray-500"
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-4.35-4.35m1.8-6.45a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-            <input
-              type="text"
-              className={`
-                pl-10 pr-4 py-2 rounded-full border w-full
-                ${
-                  darkMode
-                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    : "bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
-                }
-                focus:outline-none focus:ring-2 focus:ring-purple-500
-              `}
-              placeholder="Search..."
+          <div className="hidden sm:block">
+            <SearchBar
+              darkMode={darkMode}
+              onClick={() => setSearchOpen(true)}
+              placeholder="Search anything..."
+            />
+
+            {/* Search Modal */}
+            <SearchModal
+              darkMode={darkMode}
+              isOpen={searchOpen}
+              onClose={() => setSearchOpen(false)}
+              size="2xl"
             />
           </div>
-
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}

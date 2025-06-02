@@ -98,3 +98,18 @@ export const ArrowsExpandIcon = ({ className = "h-5 w-5" }) => (
     />
   </svg>
 );
+export const SearchIcon = ({ className = "h-5 w-5" }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+    />
+  </svg>
+);
