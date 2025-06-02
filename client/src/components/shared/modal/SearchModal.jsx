@@ -34,17 +34,15 @@ const SearchModal = ({ darkMode, isOpen, onClose, size = "xl" }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 px-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 px-4"
+      onClick={onClose} // Moved onClose handler here
+    >
       <div
-        className="fixed inset-0 z-40"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <div
-        className={`relative z-50 w-full rounded-2xl shadow-2xl transition-all duration-300 ${
+        className={`relative z-10 w-full rounded-2xl shadow-2xl transition-all duration-300 ${
           sizeClasses[size] || "max-w-xl"
         } ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-        onClick={(e) => e.stopPropagation()} // <- prevents modal close on inside click
+        onClick={(e) => e.stopPropagation()} // Prevents clicks inside modal from closing it
       >
         {/* Close Button */}
         <button
