@@ -82,3 +82,19 @@ export const CreditCardIcon = ({ className = "h-5 w-5" }) => (
     />
   </svg>
 );
+
+export const ArrowsExpandIcon = ({ className = "h-5 w-5" }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M18 10h-4v4m0 0H10m4 0l6-6m-6 6V6m0 4H6m0 0L12 4m-6 6v4m0 0h4"
+    />
+  </svg>
+);

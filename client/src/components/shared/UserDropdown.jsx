@@ -6,6 +6,7 @@ import {
   ArrowRightOnRectangleIcon,
   EnvelopeIcon,
   ShieldCheckIcon,
+  ArrowsPointingOutIcon, // ✅ Import fullscreen icon
 } from "@heroicons/react/24/outline";
 
 const UserDropdown = ({ user, darkMode, onItemClick }) => {
@@ -15,6 +16,24 @@ const UserDropdown = ({ user, darkMode, onItemClick }) => {
       icon: <UserIcon className="w-5 h-5" />,
       action: () => console.log("Profile clicked"),
     },
+    {
+      label: "Fullscreen",
+      icon: <ArrowsPointingOutIcon className="w-5 h-5" />,
+      action: () => {
+        const isFullscreen = !!document.fullscreenElement;
+
+        if (!isFullscreen) {
+          document.documentElement.requestFullscreen().catch((err) => {
+            console.error("Failed to enter fullscreen:", err);
+          });
+        } else {
+          document.exitFullscreen().catch((err) => {
+            console.error("Failed to exit fullscreen:", err);
+          });
+        }
+      },
+    },
+
     {
       label: "Settings",
       icon: <Cog6ToothIcon className="w-5 h-5" />,
