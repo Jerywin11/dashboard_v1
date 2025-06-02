@@ -8,15 +8,26 @@ const Dropdown = ({
   position = "right",
   width = "w-72",
   darkMode = false,
+  onOpen, // ✅ new prop
+  onClose, // ✅ new prop
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  const toggleDropdown = () => {
+    const newState = !dropdownOpen;
+    setDropdownOpen(newState);
+    if (newState && onOpen) onOpen(); // ✅ call onOpen
+    if (!newState && onClose) onClose(); // ✅ call onClose
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+        if (dropdownOpen) {
+          setDropdownOpen(false);
+          if (onClose) onClose(); // ✅ close only if already open
+        }
       }
     };
 
@@ -24,13 +35,8 @@ const Dropdown = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [dropdownOpen, onClose]);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  // Position classes
   const positionClasses = {
     right: "right-0",
     left: "left-0",
@@ -66,6 +72,8 @@ Dropdown.propTypes = {
   position: PropTypes.oneOf(["right", "left", "center"]),
   width: PropTypes.string,
   darkMode: PropTypes.bool,
+  onOpen: PropTypes.func, // ✅ new
+  onClose: PropTypes.func, // ✅ new
 };
 
 export default Dropdown;

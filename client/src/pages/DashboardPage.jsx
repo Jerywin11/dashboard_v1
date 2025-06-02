@@ -52,7 +52,7 @@ const Dashboard = () => {
   return (
     <div
       className={`flex h-screen font-sans ${
-        darkMode ? "dark bg-gray-900" : "bg-gray-50"
+        darkMode ? "dark bg-gray-900 shadow-none" : "bg-gray-100 shadow-sm" // Changed from bg-gray-50 to bg-gray-800
       }`}
     >
       {/* Mobile overlay */}

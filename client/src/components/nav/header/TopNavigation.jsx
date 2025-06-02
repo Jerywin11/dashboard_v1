@@ -5,6 +5,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Dropdown from "../../shared/Dropdown";
 import UserDropdown from "../../shared/UserDropdown";
 import NotificationsDropdown from "../../shared/NotificationsDropdown";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 const TopNavigation = ({
   darkMode,
@@ -12,7 +13,7 @@ const TopNavigation = ({
   sidebarOpen,
   setSidebarOpen,
   isMobile,
-  logoText = "ZeriByteCare",
+  logoText = "ByteCare",
   user = {
     name: "Admin User",
     avatar:
@@ -22,24 +23,75 @@ const TopNavigation = ({
   notifications,
   showNotifications = true,
 }) => {
-  const [notificationCount, setNotificationCount] = useState(3); // Example count
+  const [notificationCount, setNotificationCount] = useState(3);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [activeNavItem, setActiveNavItem] = useState("home");
 
   const handleNotificationClick = (notification) => {
     console.log("Notification clicked:", notification);
-    // Mark as read logic would go here
-    // For now, we'll just decrement the count if it was unread
     if (notification && !notification.read) {
       setNotificationCount((prev) => Math.max(0, prev - 1));
     }
   };
 
+  const navItems = [
+    {
+      id: "home",
+      icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+    },
+    {
+      id: "market",
+      icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
+    },
+    {
+      id: "message",
+      icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+    },
+    {
+      id: "favourite",
+      icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+    },
+  ];
+
   return (
     <header
       className={`${
         darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-      } border-b sticky top-0 z-10 h-[65px]`}
+      } border-b sticky top-0 z-10`}
     >
-      <div className="flex items-center justify-between px-4 h-full">
+      {/* First Row */}
+      <div className="flex items-center justify-between px-4 h-[65px]">
+        {/* Menu toggle button */}
+        <div className="hidden md:block">
+          <button
+            type="button"
+            className={`font-bold mr-4 ${
+              darkMode ? "text-white" : "text-gray-900"
+            }`}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <span className="sr-only">Open sidebar</span>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={
+                  sidebarOpen
+                    ? "M6 18L18 6M6 6l12 12"
+                    : "M4 6h16M4 12h16M4 18h16"
+                }
+              />
+            </svg>
+          </button>
+        </div>
+
         {/* Left side content */}
         <div className="flex items-center">
           <h2
@@ -58,6 +110,41 @@ const TopNavigation = ({
 
         {/* Right side content */}
         <div className="flex items-center space-x-4">
+          {/* Search Bar (hidden on smaller screens) */}
+          <div className="hidden md:block relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 ${
+                  darkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-4.35-4.35m1.8-6.45a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              className={`
+                pl-10 pr-4 py-2 rounded-full border w-full
+                ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                    : "bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
+                }
+                focus:outline-none focus:ring-2 focus:ring-purple-500
+              `}
+              placeholder="Search..."
+            />
+          </div>
+
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -109,7 +196,7 @@ const TopNavigation = ({
                 <div className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 relative">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-500 dark:text-gray-400"
+                    className="h-6 w-6 text-gray-500 dark:text-gray-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -138,8 +225,12 @@ const TopNavigation = ({
           {/* User Profile with Modern Dropdown */}
           <Dropdown
             darkMode={darkMode}
+            position="right"
+            width="w-50"
+            onOpen={() => setIsUserDropdownOpen(true)}
+            onClose={() => setIsUserDropdownOpen(false)}
             trigger={
-              <div className="flex items-center space-x-1 group">
+              <div className="flex items-center space-x-1 group cursor-pointer">
                 <div className="relative">
                   <img
                     src={user.avatar}
@@ -158,11 +249,19 @@ const TopNavigation = ({
                     >
                       {user.name}
                     </span>
-                    <ChevronDownIcon
-                      className={`w-4 h-4 ml-1 ${
-                        darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
-                    />
+                    {isUserDropdownOpen ? (
+                      <ChevronUpIcon
+                        className={`w-4 h-4 ml-1 ${
+                          darkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      />
+                    ) : (
+                      <ChevronDownIcon
+                        className={`w-4 h-4 ml-1 ${
+                          darkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      />
+                    )}
                   </div>
                 )}
               </div>
@@ -170,6 +269,47 @@ const TopNavigation = ({
           >
             <UserDropdown user={user} darkMode={darkMode} />
           </Dropdown>
+        </div>
+      </div>
+
+      {/* Second Row - Navigation Icons (Mobile and md only) */}
+      <div
+        className={`md:hidden  ${
+          darkMode ? "border-gray-700" : "border-gray-300"
+        }`}
+      >
+        <div className="flex justify-around items-center h-14">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              className={`flex flex-col items-center justify-center w-full h-full ${
+                darkMode ? "text-gray-300" : "text-gray-600"
+              } ${
+                activeNavItem === item.id
+                  ? darkMode
+                    ? "bg-gray-700 text-indigo-400"
+                    : "bg-gray-100 text-indigo-600"
+                  : ""
+              }`}
+              onClick={() => setActiveNavItem(item.id)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={activeNavItem === item.id ? 2 : 1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d={item.icon}
+                />
+              </svg>
+              <span className="text-xs mt-1 capitalize">{item.id}</span>
+            </button>
+          ))}
         </div>
       </div>
     </header>
