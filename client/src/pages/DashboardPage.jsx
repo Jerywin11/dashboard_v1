@@ -12,14 +12,59 @@ import { statsData } from "../data/dashboard/stats";
 import { activitiesData } from "../data/dashboard/activities";
 import { productsData } from "../data/dashboard/products";
 import { salesData } from "../data/dashboard/sales";
-
+import { HomeIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+const Breadcrumb = ({ items, darkMode }) => {
+  return (
+    <nav className="flex px-4 md:px-6 py-3" aria-label="Breadcrumb">
+      <ol className="inline-flex items-center space-x-1 md:space-x-3 overflow-x-auto whitespace-nowrap">
+        {items.map((item, index) => (
+          <li key={item.name} className="inline-flex items-center">
+            {index > 0 && (
+              <ChevronRightIcon
+                className={`w-4 h-4 mx-1 ${
+                  darkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+              />
+            )}
+            <a
+              href={item.href}
+              className={`inline-flex items-center text-sm font-medium ${
+                darkMode
+                  ? index === items.length - 1
+                    ? "text-white"
+                    : "text-gray-400 hover:text-white"
+                  : index === items.length - 1
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700"
+              } ${index === 0 ? "min-w-[24px]" : ""}`}
+            >
+              {index === 0 ? (
+                <HomeIcon
+                  className={`w-4 h-4 ${items.length > 1 ? "mr-2" : ""} ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
+                />
+              ) : null}
+              {items.length <= 2 || !isMobile || index === items.length - 1
+                ? item.name
+                : null}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+};
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMobile, setIsMobile] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [timeRange, setTimeRange] = useState("week");
-
+  const breadcrumbItems = [
+    { name: "Home", href: "#" },
+    { name: "Dashboard", href: "#" },
+  ];
   useEffect(() => {
     const savedMode = localStorage.getItem("darkMode") === "true";
     setDarkMode(savedMode);
@@ -90,7 +135,8 @@ const Dashboard = () => {
           onNotificationClick={() => console.log("Notification clicked")}
           showNotifications={true}
         />
-
+        {/* Breadcrumb */}
+        <Breadcrumb items={breadcrumbItems} darkMode={darkMode} />
         {/* Dashboard Content */}
         <main className="p-4 md:p-6 space-y-6">
           <StatCard
