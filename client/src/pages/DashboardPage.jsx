@@ -52,7 +52,7 @@ const Dashboard = () => {
   return (
     <div
       className={`flex h-screen font-sans ${
-        darkMode ? "dark bg-gray-900 shadow-none" : "bg-gray-100 shadow-sm" // Changed from bg-gray-50 to bg-gray-800
+        darkMode ? "dark bg-gray-900 shadow-none" : "bg-gray-100 shadow-sm"
       }`}
     >
       {/* Mobile overlay */}
@@ -95,40 +95,65 @@ const Dashboard = () => {
         <main className="p-4 md:p-6 space-y-6">
           <StatCard
             stats={statsData}
-            cols={{ sm: 2, lg: 3 }}
-            className="mb-6"
+            cardHeight={120}
+            cardWidth="100%"
+            cardClassName="custom-shadow"
             darkMode={darkMode}
           />
 
-          <ChartCard
-            title="Sales Overview"
-            data={salesData}
-            timeRange={timeRange}
-            setTimeRange={setTimeRange}
-            darkMode={darkMode}
-            className="mb-6"
-            height="h-64"
-          />
+          {/* Two-column chart section */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Chart */}
+            <ChartCard
+              title="Sales Overview"
+              data={salesData}
+              timeRange={timeRange}
+              setTimeRange={setTimeRange}
+              darkMode={darkMode}
+              height="h-64"
+            />
 
-          <ProductListCard
-            title="Best Selling Products"
-            products={productsData}
-            darkMode={darkMode}
-            className="mb-6"
-            icon={
-              <TrendDownIcon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-            }
-          />
+            {/* Right Chart - You can add different data or props for this chart */}
+            <ChartCard
+              title="Revenue Overview"
+              data={salesData} // You might want to use different data here
+              timeRange={timeRange}
+              setTimeRange={setTimeRange}
+              darkMode={darkMode}
+              height="h-64"
+            />
 
-          <ActivityFeed
-            activities={activitiesData}
-            title="User Activities"
-            darkMode={darkMode}
-            className="mb-6"
-            icon={
-              <UserIcon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-            }
-          />
+            {/* Right Chart - You can add different data or props for this chart */}
+            <ChartCard
+              title="Expenses Overview"
+              data={salesData} // You might want to use different data here
+              timeRange={timeRange}
+              setTimeRange={setTimeRange}
+              darkMode={darkMode}
+              height="h-64"
+            />
+          </div>
+
+          {/* Bottom section with products and activities */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ProductListCard
+              title="Best Selling Products"
+              products={productsData}
+              darkMode={darkMode}
+              icon={
+                <TrendDownIcon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              }
+            />
+
+            <ActivityFeed
+              activities={activitiesData}
+              title="User Activities"
+              darkMode={darkMode}
+              icon={
+                <UserIcon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              }
+            />
+          </div>
         </main>
       </div>
     </div>

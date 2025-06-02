@@ -1,4 +1,5 @@
 // src/components/TopNavigation.jsx
+
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -97,10 +98,10 @@ const TopNavigation = ({
           <h2
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`
-              block lg:hidden
-              cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
-              ${darkMode ? "text-white" : "text-gray-900"}
-            `}
+    hidden max-md:block
+    cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
+    ${darkMode ? "text-white" : "text-gray-900"}
+  `}
           >
             <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {logoText}
@@ -274,28 +275,28 @@ const TopNavigation = ({
 
       {/* Second Row - Navigation Icons (Mobile and md only) */}
       <div
-        className={`md:hidden  ${
-          darkMode ? "border-gray-700" : "border-gray-300"
-        }`}
+        className={`md:hidden ${
+          darkMode ? "border-gray-700" : "border-gray-200"
+        } border-t`}
       >
         <div className="flex justify-around items-center h-14">
           {navItems.map((item) => (
             <button
               key={item.id}
-              className={`flex flex-col items-center justify-center w-full h-full ${
-                darkMode ? "text-gray-300" : "text-gray-600"
-              } ${
-                activeNavItem === item.id
-                  ? darkMode
-                    ? "bg-gray-700 text-indigo-400"
-                    : "bg-gray-100 text-indigo-600"
-                  : ""
-              }`}
+              className="flex flex-col items-center justify-center w-full h-full"
               onClick={() => setActiveNavItem(item.id)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className={`h-6 w-6 ${
+                  darkMode
+                    ? activeNavItem === item.id
+                      ? "text-indigo-400"
+                      : "text-gray-400"
+                    : activeNavItem === item.id
+                    ? "text-indigo-600"
+                    : "text-gray-500"
+                }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -307,7 +308,19 @@ const TopNavigation = ({
                   d={item.icon}
                 />
               </svg>
-              <span className="text-xs mt-1 capitalize">{item.id}</span>
+              <span
+                className={`text-xs mt-1 capitalize ${
+                  darkMode
+                    ? activeNavItem === item.id
+                      ? "text-indigo-400"
+                      : "text-gray-400"
+                    : activeNavItem === item.id
+                    ? "text-indigo-600"
+                    : "text-gray-500"
+                }`}
+              >
+                {item.id}
+              </span>
             </button>
           ))}
         </div>

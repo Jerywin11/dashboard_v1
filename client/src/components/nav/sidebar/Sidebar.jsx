@@ -37,7 +37,7 @@ const Sidebar = ({
     >
       {/* Sidebar Header */}
       <div
-        className={`flex items-center justify-center px-4 py-4 border-b ${
+        className={`flex items-center justify-start px-4 py-4 border-b ${
           darkMode ? "border-gray-700" : "border-gray-200"
         } h-[65px] flex-shrink-0`}
       >

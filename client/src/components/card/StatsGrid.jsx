@@ -1,14 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const StatCard = ({ title, value, change, trend, darkMode }) => {
+const StatCard = ({
+  title,
+  value,
+  change,
+  trend,
+  darkMode,
+  height = "auto", // Default to auto height
+  width = "auto", // Default to auto width
+  className = "", // Additional className prop
+}) => {
   return (
     <div
       className={`rounded-lg shadow p-4 sm:p-6 transition-colors duration-200 ${
         darkMode ? "bg-gray-800" : "bg-white"
-      }`}
+      } ${className}`}
+      style={{
+        height: typeof height === "number" ? `${height}px` : height,
+        width: typeof width === "number" ? `${width}px` : width,
+      }}
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start h-full">
         {/* Stat Info */}
         <div>
           <p
@@ -76,6 +89,9 @@ const StatsGrid = ({
   cols = { sm: 2, lg: 4 },
   className = "",
   darkMode = false,
+  cardHeight = "auto",
+  cardWidth = "auto",
+  cardClassName = "",
 }) => {
   return (
     <section
@@ -89,6 +105,9 @@ const StatsGrid = ({
           change={stat.change}
           trend={stat.trend}
           darkMode={darkMode}
+          height={stat.height || cardHeight}
+          width={stat.width || cardWidth}
+          className={stat.className || cardClassName}
         />
       ))}
     </section>
@@ -104,6 +123,9 @@ StatsGrid.propTypes = {
         .isRequired,
       change: PropTypes.string.isRequired,
       trend: PropTypes.oneOf(["up", "down"]).isRequired,
+      height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      className: PropTypes.string,
     })
   ).isRequired,
   cols: PropTypes.shape({
@@ -112,6 +134,9 @@ StatsGrid.propTypes = {
   }),
   className: PropTypes.string,
   darkMode: PropTypes.bool,
+  cardHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cardWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cardClassName: PropTypes.string,
 };
 
 StatCard.propTypes = {
@@ -120,6 +145,9 @@ StatCard.propTypes = {
   change: PropTypes.string.isRequired,
   trend: PropTypes.oneOf(["up", "down"]).isRequired,
   darkMode: PropTypes.bool,
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  className: PropTypes.string,
 };
 
 export default StatsGrid;
