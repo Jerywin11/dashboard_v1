@@ -1,3 +1,4 @@
+// src/pages/DashboardPage.jsx
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/nav/sidebar/Sidebar";
 import { navItems } from "../components/nav/sidebar/sidebarConfig";
@@ -56,43 +57,32 @@ const Breadcrumb = ({ items, darkMode }) => {
   );
 };
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [isMobile, setIsMobile] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+
   const [timeRange, setTimeRange] = useState("week");
   const breadcrumbItems = [
     { name: "Home", href: "#" },
     { name: "Dashboard", href: "#" },
   ];
-  useEffect(() => {
-    const savedMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedMode);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // Only auto-close if changing to mobile, don't auto-open when changing to desktop
+      if (mobile && sidebarOpen) {
         setSidebarOpen(false);
-      } else {
-        setSidebarOpen(true);
       }
     };
 
-    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [sidebarOpen]); // Add sidebarOpen as dependency
 
   return (
     <div

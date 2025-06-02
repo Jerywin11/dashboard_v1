@@ -1,8 +1,8 @@
+// src/components/nav/sidebar/Sidebar.jsx
+
 import React, { useState } from "react";
 import NavItem from "./NavItem";
 import NavGroup from "./NavGroup";
-import SearchBar from "../../shared/SearchBar";
-import SearchModal from "../../shared/modal/SearchModal";
 
 const Sidebar = ({
   sidebarOpen,
@@ -17,7 +17,6 @@ const Sidebar = ({
 
   const handleItemClick = (tab) => {
     setActiveTab(tab);
-    if (!sidebarOpen && !isMobile) setSidebarOpen(true);
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -52,15 +51,7 @@ const Sidebar = ({
           </span>
         </h2>
       </div>
-      <div className="block sm:hidden">
-        <div className="px-4 pt-3">
-          <SearchBar
-            darkMode={darkMode}
-            onClick={() => setSearchOpen(true)}
-            placeholder="Search anything..."
-          />
-        </div>
-      </div>
+
       {searchOpen && (
         <SearchModal
           darkMode={darkMode}

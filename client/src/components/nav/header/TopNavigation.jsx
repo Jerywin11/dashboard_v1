@@ -1,5 +1,4 @@
 // src/components/TopNavigation.jsx
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -7,8 +6,7 @@ import Dropdown from "../../shared/Dropdown";
 import UserDropdown from "../../shared/UserDropdown";
 import NotificationsDropdown from "../../shared/NotificationsDropdown";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import SearchModal from "../../shared/modal/SearchModal";
-import SearchBar from "../../shared/SearchBar";
+
 const TopNavigation = ({
   darkMode,
   setDarkMode,
@@ -28,7 +26,6 @@ const TopNavigation = ({
   const [notificationCount, setNotificationCount] = useState(3);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState("home");
-  const [searchOpen, setSearchOpen] = useState(false);
 
   const handleNotificationClick = (notification) => {
     console.log("Notification clicked:", notification);
@@ -39,20 +36,24 @@ const TopNavigation = ({
 
   const navItems = [
     {
-      id: "home",
-      icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+      id: "home", // Homepage
+      icon: "M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1V9.5z",
     },
     {
-      id: "market",
-      icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
+      id: "shop", // Product categories / main shopping screen
+      icon: "M4 4h16v2H4V4zm0 4h16v10a1 1 0 01-1 1H5a1 1 0 01-1-1V8z",
     },
     {
-      id: "message",
-      icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+      id: "cart", // Shopping cart
+      icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5m1.6 8l-2 3a1 1 0 00.8 1.6H17a1 1 0 00.8-1.6l-2-3",
     },
     {
-      id: "favourite",
-      icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+      id: "orders", // Past orders
+      icon: "M5 3a1 1 0 00-1 1v16a1 1 0 001 1h14a1 1 0 001-1V4a1 1 0 00-1-1H5zm8 4h3v2h-3V7zm-6 0h5v2H7V7zm0 4h9v2H7v-2zm0 4h9v2H7v-2z",
+    },
+    {
+      id: "wishlist", // Favorites or saved items
+      icon: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4 8.04 4 9.54 4.99 10.04 6.24h1.92C13.46 4.99 14.96 4 16.5 4 19 4 21 6 21 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z",
     },
   ];
 
@@ -100,10 +101,10 @@ const TopNavigation = ({
           <h2
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`
-            hidden max-md:block
-            cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
-            ${darkMode ? "text-white" : "text-gray-900"}
-          `}
+              block lg:hidden
+              cursor-pointer text-2xl font-bold tracking-tight transition-colors duration-300 select-none 
+              ${darkMode ? "text-white" : "text-gray-900"}
+            `}
           >
             <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {logoText}
@@ -112,23 +113,42 @@ const TopNavigation = ({
         </div>
 
         {/* Right side content */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
           {/* Search Bar (hidden on smaller screens) */}
-          <div className="hidden sm:block">
-            <SearchBar
-              darkMode={darkMode}
-              onClick={() => setSearchOpen(true)}
-              placeholder="Search anything..."
-            />
-
-            {/* Search Modal */}
-            <SearchModal
-              darkMode={darkMode}
-              isOpen={searchOpen}
-              onClose={() => setSearchOpen(false)}
-              size="2xl"
+          <div className="hidden md:block relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 ${
+                  darkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-4.35-4.35m1.8-6.45a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              className={`
+                pl-10 pr-4 py-2 rounded-full border w-full
+                ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                    : "bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
+                }
+                focus:outline-none focus:ring-2 focus:ring-purple-500
+              `}
+              placeholder="Search..."
             />
           </div>
+
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -258,15 +278,15 @@ const TopNavigation = ({
 
       {/* Second Row - Navigation Icons (Mobile and md only) */}
       <div
-        className={`md:hidden ${
+        className={`md:hidden relative ${
           darkMode ? "border-gray-700" : "border-gray-200"
-        } border-t`}
+        }`}
       >
-        <div className="flex justify-around items-center h-14">
+        <div className="flex justify-around items-center h-12">
           {navItems.map((item) => (
             <button
               key={item.id}
-              className="flex flex-col items-center justify-center w-full h-full"
+              className="flex flex-col items-center justify-center w-full h-full relative"
               onClick={() => setActiveNavItem(item.id)}
             >
               <svg
@@ -283,7 +303,7 @@ const TopNavigation = ({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={activeNavItem === item.id ? 2 : 1.5}
+                strokeWidth={activeNavItem === item.id ? 2.5 : 2}
               >
                 <path
                   strokeLinecap="round"
@@ -304,6 +324,13 @@ const TopNavigation = ({
               >
                 {item.id}
               </span>
+              {activeNavItem === item.id && (
+                <div
+                  className={`absolute bottom-0 w-full h-1 rounded-t ${
+                    darkMode ? "bg-indigo-400" : "bg-indigo-600"
+                  }`}
+                ></div>
+              )}
             </button>
           ))}
         </div>

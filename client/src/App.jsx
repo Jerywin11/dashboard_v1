@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import LandingPage from "./pages/LandingPage";
 import ChatPage from "./pages/ChatPage";
 import TestPage from "./pages/TestPage";
+import Layout from "./layouts/Layout";
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/layout" element={<Layout />} />
       </Routes>
     </Router>
   );

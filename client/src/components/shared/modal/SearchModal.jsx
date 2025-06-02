@@ -1,5 +1,4 @@
-// src/components/shared/modal/SearchModal.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
@@ -20,33 +19,77 @@ const SearchModal = ({ darkMode, isOpen, onClose, size = "xl" }) => {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
 
-  useEffect(() => {
-    if (query.trim() === "") {
-      setFiltered([]);
-    } else {
-      const results = searchSuggestions.filter((item) =>
-        item.toLowerCase().includes(query.toLowerCase())
-      );
-      setFiltered(results);
+  const handleClose = useCallback(() => {
+    // Don't close if keyboard is likely open (on mobile)
+    if (window.innerHeight < window.outerHeight) {
+      return;
     }
-  }, [query]);
 
-  if (!isOpen) return null;
+    if (window.innerWidth <= 768) {
+      setTimeout(onClose, 100);
+    } else {
+      onClose();
+    }
+  }, [onClose]);
+  useEffect(() => {
+    function onViewportResize() {
+      const viewportHeight = window.visualViewport.height;
+      // reposition or adjust the modal if needed
+    }
+    window.visualViewport.addEventListener("resize", onViewportResize);
+    return () =>
+      window.visualViewport.removeEventListener("resize", onViewportResize);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      const input = document.querySelector('input[type="text"]');
+      if (input) input.focus();
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyboardEvent = (e) => {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyboardEvent);
+    return () => {
+      window.removeEventListener("keydown", handleKeyboardEvent);
+    };
+  }, [isOpen, handleClose]);
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 px-4"
-      onClick={onClose} // Moved onClose handler here
+      style={{ position: "fixed", overflow: "hidden" }}
     >
       <div
-        className={`relative z-10 w-full rounded-2xl shadow-2xl transition-all duration-300 ${
+        className="fixed inset-0 z-40"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            handleClose();
+          }
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className={`relative z-50 w-full rounded-2xl shadow-2xl transition-all duration-300 search-modal-container ${
           sizeClasses[size] || "max-w-xl"
         } ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
-        onClick={(e) => e.stopPropagation()} // Prevents clicks inside modal from closing it
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-700/20 transition"
         >
           <XMarkIcon
@@ -69,6 +112,11 @@ const SearchModal = ({ darkMode, isOpen, onClose, size = "xl" }) => {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
+              onTouchMove={(e) => e.stopPropagation()}
               placeholder="Search..."
               autoFocus
               className={`w-full pl-10 pr-4 py-2.5 rounded-lg border text-base focus:outline-none focus:ring-2 focus:ring-purple-500
@@ -79,7 +127,6 @@ const SearchModal = ({ darkMode, isOpen, onClose, size = "xl" }) => {
                 }`}
             />
           </div>
-
           {/* Suggestions */}
           {query.trim() !== "" && filtered.length > 0 && (
             <div className="space-y-2">

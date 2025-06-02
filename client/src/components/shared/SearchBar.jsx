@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const SearchBar = ({ darkMode, onClick, placeholder = "Search..." }) => {
   return (
-    <div className=" relative">
+    <div className="relative" onClick={(e) => e.stopPropagation()}>
       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,10 @@ const SearchBar = ({ darkMode, onClick, placeholder = "Search..." }) => {
           focus:outline-none focus:ring-2 focus:ring-purple-500
         `}
         placeholder={placeholder}
-        onClick={onClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick(e);
+        }}
         readOnly // Optional: Prevent typing since it just opens modal
       />
     </div>
