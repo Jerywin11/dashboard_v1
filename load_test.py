@@ -6,4 +6,5 @@ class WebsiteUser(HttpUser):
     @task
     def load_homepage(self):
         self.client.get("/")  # Simulate accessing the homepage
+        
 #locust -f load_test.py --host=https://zeribytecare.com
