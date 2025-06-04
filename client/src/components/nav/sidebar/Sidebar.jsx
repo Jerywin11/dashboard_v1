@@ -38,7 +38,7 @@ const Sidebar = ({
       <div
         className={`flex items-center justify-start px-4 py-4 border-b ${
           darkMode ? "border-gray-700" : "border-gray-200"
-        } h-[65px] flex-shrink-0`}
+        } h-[66px] flex-shrink-0`}
       >
         <h2
           onClick={() => setSidebarOpen(!sidebarOpen)}
